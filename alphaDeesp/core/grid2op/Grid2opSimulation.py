@@ -61,8 +61,8 @@ class Grid2opSimulation(Simulation):
         self.substation_in_cooldown=self.get_substation_in_cooldown()
         self.param_options = param_options
         self.reward_type=reward_type
-        self.args_number_of_simulated_topos = param_options["totalnumberofsimulatedtopos"]
-        self.args_inner_number_of_simulated_topos_per_node = param_options["numberofsimulatedtopospernode"]
+        self.args_number_of_simulated_topos = param_options["totalNumberOfSimulatedTopos"]
+        self.args_inner_number_of_simulated_topos_per_node = param_options["numberOfSimulatedToposPerNode"]
 
         print("Number of generators of the powergrid: {}".format(self.obs.n_gen))
         print("Number of loads of the powergrid: {}".format(self.obs.n_load))
@@ -216,10 +216,13 @@ class Grid2opSimulation(Simulation):
                 #print(score_data)
                 #max_index = end_result_dataframe.shape[0]  # rows
                 #end_result_dataframe.loc[max_index] = score_data
-                end_result_dataframe=end_result_dataframe.append(pd.Series(score_data, index=end_result_dataframe.columns ),ignore_index=True)
+                end_result_dataframe=pd.concat([
+                    end_result_dataframe, 
+                    pd.Series(score_data, index=end_result_dataframe.columns).to_frame().T
+                    ],ignore_index=True)
                 ii += 1
                 j += 1
-
+        end_result_dataframe["Efficacity"] = pd.to_numeric(end_result_dataframe["Efficacity"])
         end_result_dataframe.to_csv("./END_RESULT_DATAFRAME.csv", index=True)
 
         # Case there are no hubs --> action do nothing
