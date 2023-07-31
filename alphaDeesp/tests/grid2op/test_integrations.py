@@ -11,6 +11,7 @@ import time
 from alphaDeesp.core.grid2op.Grid2opObservationLoader import Grid2opObservationLoader
 from alphaDeesp.core.grid2op.Grid2opSimulation import Grid2opSimulation
 
+from alphaDeesp.tests.grid2op.grid2op_grid_test import resources_for_test_folder
 
 custom_layout = [(-280, -81), (-100, -270), (366, -270), (366, -54), (-64, -54), (-64, 54), (366, 0),
                  (438, 0), (326, 54), (222, 108), (79, 162), (-152, 270), (-64, 270), (222, 216),
@@ -18,7 +19,7 @@ custom_layout = [(-280, -81), (-100, -270), (366, -270), (366, -54), (-64, -54),
                  (438, 100), (326, 140), (200, 8), (79, 12), (-152, 170), (-70, 200), (222, 200)]
 
 
-def build_sim(ltc, param_folder, config_file = "./alphaDeesp/tests/resources_for_tests_grid2op/config_for_tests.ini",
+def build_sim(ltc, param_folder, config_file = resources_for_test_folder / "config_for_tests.ini",
               chronic_scenario = None, timestep = 0,modified_thermal_Limit=None):
     config = configparser.ConfigParser()
     config.read(config_file)
@@ -132,7 +133,7 @@ def test_integration_dataframe_results_with_line_9_cut():
     # os.chdir('../../../')
 
     ltc = 9
-    param_folder = "./alphaDeesp/tests/resources_for_tests_grid2op/l2rpn_2019_ltc_9"
+    param_folder = resources_for_test_folder / "l2rpn_2019_ltc_9"
 
     sim,env = build_sim(ltc, param_folder)
     df_of_g = sim.get_dataframe()
@@ -150,7 +151,7 @@ def test_integration_dataframe_results_with_line_9_cut():
     #expert_system_results.to_csv("alphaDeesp/tests/resources_for_tests_grid2op/END_RESULT_DATAFRAME_G2OP_LTC9_9CAPA_230_generated.csv")
 
     path_to_saved_end_result_dataframe = \
-        Path.cwd() / "alphaDeesp/tests/resources_for_tests_grid2op/END_RESULT_DATAFRAME_G2OP_LTC9_9CAPA_230.csv"
+        resources_for_test_folder / "END_RESULT_DATAFRAME_G2OP_LTC9_9CAPA_230.csv"
 
     #expert_system_results.to_csv(path_to_saved_end_result_dataframe)
     saved_df = pd.read_csv(path_to_saved_end_result_dataframe, index_col=0)
@@ -175,7 +176,7 @@ def test_integration_dataframe_results_with_line_8_cut():
     # os.chdir('../../../')
 
     ltc = 8
-    param_folder = "./alphaDeesp/tests/resources_for_tests_grid2op/l2rpn_2019_ltc_8"
+    param_folder = resources_for_test_folder / "l2rpn_2019_ltc_8"
 
     sim,env = build_sim(ltc, param_folder)
     df_of_g = sim.get_dataframe()
@@ -191,7 +192,7 @@ def test_integration_dataframe_results_with_line_8_cut():
     expert_system_results, actions = sim.compute_new_network_changes(ranked_combinations)
 
     path_to_saved_end_result_dataframe = \
-        Path.cwd() / "alphaDeesp/tests/resources_for_tests_grid2op/END_RESULT_DATAFRAME_G2OP_LTC8_8CAPA_88.csv"
+        resources_for_test_folder / "END_RESULT_DATAFRAME_G2OP_LTC8_8CAPA_88.csv"
 
     # expert_system_results.to_csv(path_to_saved_end_result_dataframe)
     saved_df = pd.read_csv(path_to_saved_end_result_dataframe, index_col=0)
@@ -218,9 +219,9 @@ def test_integration_dataframe_results_with_modified_substation4():
 
     timestep = 5
     ltc = 8
-    param_folder = "./alphaDeesp/tests/resources_for_tests_grid2op/l2rpn_2019_ltc_8_modify_substation_4"
+    param_folder = resources_for_test_folder / "l2rpn_2019_ltc_8_modify_substation_4"
     config = configparser.ConfigParser()
-    config.read("./alphaDeesp/tests/resources_for_tests_grid2op/config_for_tests.ini")
+    config.read(resources_for_test_folder / "config_for_tests.ini")
 
     ## Read Grid2op environment at timestep
     loader = Grid2opObservationLoader(param_folder)
@@ -249,7 +250,7 @@ def test_integration_dataframe_results_with_modified_substation4():
 
     # Read desired results
     path_to_saved_end_result_dataframe = \
-        Path.cwd() / "alphaDeesp/tests/resources_for_tests_grid2op/END_RESULT_DATAFRAME_G2OP_MODIFIED_SUBSTATION4.csv"
+        resources_for_test_folder / "END_RESULT_DATAFRAME_G2OP_MODIFIED_SUBSTATION4.csv"
     #expert_system_results.to_csv(path_to_saved_end_result_dataframe)
     saved_df = pd.read_csv(path_to_saved_end_result_dataframe, index_col=0)
 
@@ -273,8 +274,8 @@ def test_integration_dataframe_results_with_case_14_realistic():
     ltc = 4
     chronic_scenario = "000"
     timestep = 518
-    param_folder = "./alphaDeesp/ressources/parameters/rte_case14_realistic" # We go directly in the folder to avoid double storing of "heavy" data
-    config_file = "./alphaDeesp/tests/resources_for_tests_grid2op/config_for_tests.ini"
+    param_folder = resources_for_test_folder / "rte_case14_realistic" # We go directly in the folder to avoid double storing of "heavy" data
+    config_file = resources_for_test_folder / "config_for_tests.ini"
 
     sim,env = build_sim(ltc, param_folder, config_file = config_file, timestep=timestep, chronic_scenario=chronic_scenario)
     df_of_g = sim.get_dataframe()
@@ -293,7 +294,7 @@ def test_integration_dataframe_results_with_case_14_realistic():
     # expert_system_results.to_csv("alphaDeesp/tests/resources_for_tests_grid2op/END_RESULT_DATAFRAME_G2OP_CASE14_REALISTIC_generated.csv")
 
     path_to_saved_end_result_dataframe = \
-        Path.cwd() / "alphaDeesp/tests/resources_for_tests_grid2op/END_RESULT_DATAFRAME_G2OP_CASE14_REALISTIC.csv"
+        resources_for_test_folder / "END_RESULT_DATAFRAME_G2OP_CASE14_REALISTIC.csv"
 
     saved_df = pd.read_csv(path_to_saved_end_result_dataframe, index_col=0)
 
@@ -318,8 +319,8 @@ def test_integration_dataframe_results_no_hubs():
     ltc = 9
     chronic_scenario = "i"#None#
     timestep = 0#1
-    param_folder = "./alphaDeesp/tests/resources_for_tests_grid2op/l2rpn_2019_nohubs"#"rte_case14_realistic"#
-    config_file = "./alphaDeesp/tests/resources_for_tests_grid2op/config_for_tests.ini"
+    param_folder = resources_for_test_folder / "l2rpn_2019_nohubs"#"rte_case14_realistic"#
+    config_file = resources_for_test_folder / "config_for_tests.ini"
 
     sim,env = build_sim(ltc, param_folder, config_file = config_file, timestep=timestep, chronic_scenario=chronic_scenario)
     df_of_g = sim.get_dataframe()
@@ -352,7 +353,7 @@ def test_integration_dataframe_results_no_hubs():
     # expert_system_results.to_csv(r'D:\RTE\ExpertOp4Grid\5 - Résultats\2021_Timestep0_errors\generated_df.csv')
 
     path_to_saved_end_result_dataframe = \
-        Path.cwd() / "alphaDeesp/tests/resources_for_tests_grid2op/END_RESULT_DATAFRAME_G2OP_NO_HUBS.csv"
+        resources_for_test_folder / "END_RESULT_DATAFRAME_G2OP_NO_HUBS.csv"
 
     saved_df = pd.read_csv(path_to_saved_end_result_dataframe, index_col=0)
 
@@ -380,8 +381,8 @@ def test_integration_l2rpn_wcci_2020_computation_time():
     ltc = 13
     chronic_scenario = "Scenario_february_069"
     timestep = 100
-    param_folder = "./alphaDeesp/tests/resources_for_tests_grid2op/l2rpn_wcci_2020"
-    config_file = "./alphaDeesp/tests/resources_for_tests_grid2op/config_for_tests.ini"
+    param_folder = resources_for_test_folder / "l2rpn_wcci_2020"
+    config_file = resources_for_test_folder / "config_for_tests.ini"
     sim,env = build_sim(ltc, param_folder, config_file = config_file, timestep=timestep, chronic_scenario=chronic_scenario)
 
     # Starting time
@@ -422,8 +423,8 @@ def test_double_lines_wcci_2020():
     ltc = 27
     chronic_scenario = "Scenario_february_069"
     timestep = 100
-    param_folder = "./alphaDeesp/tests/resources_for_tests_grid2op/l2rpn_wcci_2020"
-    config_file = "./alphaDeesp/tests/resources_for_tests_grid2op/config_for_tests.ini"
+    param_folder = resources_for_test_folder / "l2rpn_wcci_2020"
+    config_file = resources_for_test_folder / "config_for_tests.ini"
 
     modified_thermal_Limit=150#the flow in the line is about 158amps
     sim,env = build_sim(ltc, param_folder, config_file = config_file, timestep=timestep, chronic_scenario=chronic_scenario,modified_thermal_Limit=modified_thermal_Limit)

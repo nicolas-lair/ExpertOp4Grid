@@ -11,7 +11,7 @@ class Grid2opObservationLoader:
         #self.custom_params.NB_TIMESTEP_OVERFLOW_ALLOWED = 9999999
         
         try:
-            from lightsim2grid.LightSimBackend import LightSimBackend
+            from lightsim2grid import LightSimBackend
             backend = LightSimBackend()
         except:
             from grid2op.Backend import PandaPowerBackend

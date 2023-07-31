@@ -1,6 +1,6 @@
 """This file contains tests for creating overflow graph. ie,
 graph with delta flows, current_flows - flows_after_closing_line"""
-
+from pathlib import Path
 import numpy as np
 import configparser
 import networkx as nx
@@ -9,12 +9,15 @@ from alphaDeesp.core.grid2op.Grid2opObservationLoader import Grid2opObservationL
 from alphaDeesp.core.grid2op.Grid2opSimulation import Grid2opSimulation, build_powerflow_graph
 from alphaDeesp.core.alphadeesp import AlphaDeesp
 
-
+current_file_path = __file__
+resources_for_test_folder = Path(current_file_path).parent.parent / "resources_for_tests_grid2op"
 
 def build_sim():
+
     config = configparser.ConfigParser()
-    config.read("./alphaDeesp/tests/resources_for_tests_grid2op/config_for_tests.ini")
-    param_folder = "./alphaDeesp/tests/resources_for_tests_grid2op/l2rpn_2019_ltc_9"
+    config.read(resources_for_test_folder / "config_for_tests.ini")
+    # param_folder = "./alphaDeesp/tests/resources_for_tests_grid2op/l2rpn_2019_ltc_9"
+    param_folder = resources_for_test_folder / "l2rpn_2019_ltc_9"
 
     loader = Grid2opObservationLoader(param_folder)
     env, obs, action_space = loader.get_observation()
@@ -29,7 +32,7 @@ def test_powerflow_graph():
 
     g_pow = build_powerflow_graph(sim.topo, sim.obs)
     print(sim.df)
-    path_to_saved_graph = "./alphaDeesp/tests/resources_for_tests_grid2op/saved_graphs/g_pow.dot"
+    path_to_saved_graph = resources_for_test_folder / "saved_graphs/g_pow.dot"
     saved_g = nx.drawing.nx_pydot.read_dot(path_to_saved_graph)
     
     for e1 in saved_g.edges(data="xlabel"):
@@ -46,9 +49,9 @@ def test_powerflow_graph():
 def test_overflow_grid():
     """This function, given the input folder in test/path,
     it computes the overflow graph and compares it with the saved graph: saved_overflow_graph.dot"""
-    sim,env = build_sim()
+    sim, env = build_sim()
     g_over = sim.build_graph_from_data_frame([9])
-    path_to_saved_graph = "./alphaDeesp/tests/resources_for_tests_grid2op/saved_graphs/g_over.dot"
+    path_to_saved_graph = resources_for_test_folder / "saved_graphs/g_over.dot"
 
     saved_g = nx.drawing.nx_pydot.read_dot(path_to_saved_graph)
 
@@ -133,8 +136,8 @@ def test_apply_topo():
     # os.chdir('../../../')
 
     config = configparser.ConfigParser()
-    config.read("./alphaDeesp/tests/resources_for_tests_grid2op/config_for_tests.ini")
-    param_folder = "./alphaDeesp/tests/resources_for_tests_grid2op/l2rpn_2019_ltc_9"
+    config.read(resources_for_test_folder / "config_for_tests.ini")
+    param_folder = resources_for_test_folder / "l2rpn_2019_ltc_9"
     ltc = [9]
 
     loader = Grid2opObservationLoader(param_folder)
